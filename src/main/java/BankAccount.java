@@ -83,8 +83,8 @@ public class BankAccount {
     {
         System.out.println("You have " + balance + " left in your account.");
     }
-    
-    private boolean checkPassword()
+
+    public boolean checkPassword()
     {
         System.out.println("Please enter your password to access account: ");
         String passEntry = scan.nextLine();

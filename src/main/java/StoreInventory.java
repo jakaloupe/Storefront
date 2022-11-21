@@ -1,49 +1,79 @@
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class StoreInventory {
-    
+
     private ArrayList<BuyableClothing> clothesForSale = new ArrayList<BuyableClothing>();
     private ArrayList<BuyableFood> foodForSale = new ArrayList<BuyableFood>();
     private ArrayList<BuyableGame> gamesForSale = new ArrayList<BuyableGame>();
-    
+    private ArrayList<BuyableFurniture> furnitureForSale = new ArrayList<BuyableFurniture>();
+    private ArrayList<Buyable> fullInventory = new ArrayList<Buyable>();
+
     public StoreInventory()
     {
         populateClothesInventory();
         populateFoodInventory();
         populateGamesInventory();
+        populateFurnitureInventory();
     }
-    
+
     // Getters and setters for inventory lists
-    
+
     public ArrayList<BuyableClothing> getClothesInventory()
     {
         return clothesForSale;
     }
-    
+
     public ArrayList<BuyableFood> getFoodInventory()
     {
         return foodForSale;
     }
-    
+
     public ArrayList<BuyableGame> getGamesInventory()
     {
         return gamesForSale;
     }
-    
-    
+
+    public ArrayList<BuyableFurniture> getFurnitureForSale() {
+        return furnitureForSale;
+    }
+
     // Returns a master list of all inventory items at once
-    public ArrayList<Buyable> getFullInventoryList()
-    {
-        ArrayList<Buyable> fullInventory = new ArrayList<Buyable>();
+
+    public ArrayList<Buyable> getFullInventoryList() {
         fullInventory.addAll(clothesForSale);
         fullInventory.addAll(foodForSale);
         fullInventory.addAll(gamesForSale);
-        
+        fullInventory.addAll(furnitureForSale);
         return fullInventory;
     }
-    
-    
+
+    public ArrayList<Buyable> getClothesList()
+    {
+        ArrayList<Buyable> clothesInventory = new ArrayList<Buyable>();
+        clothesInventory.addAll(clothesForSale);
+        return clothesInventory;
+    }
+
+    public ArrayList<Buyable> getFoodList(){
+        ArrayList<Buyable> foodInventory = new ArrayList<Buyable>();
+        foodInventory.addAll(foodForSale);
+        return foodInventory;
+    }
+
+    public ArrayList<Buyable> getGamesList() {
+        ArrayList<Buyable> gamesInventory = new ArrayList<Buyable>();
+        gamesInventory.addAll(gamesForSale);
+        return gamesInventory;
+    }
+
+    public ArrayList<Buyable> getFurnitureList() {
+        ArrayList<Buyable> furnitureInventory = new ArrayList<Buyable>();
+        furnitureInventory.addAll(furnitureForSale);
+        return furnitureInventory;
+    }
+
     public void removeItemFromInventory(Buyable item)
     {
         if(item instanceof BuyableClothing)
@@ -56,10 +86,13 @@ public class StoreInventory {
         }
         else if(item instanceof BuyableGame)
         {
-            foodForSale.remove((BuyableGame)item);
+            gamesForSale.remove((BuyableGame)item);
+        }
+        else if(item instanceof BuyableFurniture){
+            furnitureForSale.remove((BuyableFurniture)item);
         }
     }
-    
+
     public void restockItemToInventory(Buyable item)
     {
         if(item instanceof BuyableClothing)
@@ -73,14 +106,17 @@ public class StoreInventory {
         else if(item instanceof BuyableGame)
         {
             foodForSale.remove((BuyableGame)item);
-        }       
+        }
+        else if(item instanceof BuyableFurniture){
+            furnitureForSale.remove((BuyableFurniture)item);
+        }
     }
-    
+
     // Methods to populate the inventory
     private void populateClothesInventory()
     {
         // Master list of all clothes held in the store on opening
-        
+
         // Hoodies
         BuyableClothing smallHoodie = new BuyableClothing(59.99, "Hoodie", "small");
         clothesForSale.add(smallHoodie);
@@ -88,22 +124,22 @@ public class StoreInventory {
         clothesForSale.add(mediumHoodie);
         BuyableClothing largeHoodie = new BuyableClothing(59.99, "Hoodie", "lage");
         clothesForSale.add(largeHoodie);
-        
+
         // Shoes
         BuyableClothing dressShoes = new BuyableClothing(99.99, "Dress Shoes", "8");
         clothesForSale.add(dressShoes);
         BuyableClothing sandals = new BuyableClothing(9.99, "Sandals", "5");
         clothesForSale.add(sandals);
-        
+
         // Gloves
         BuyableClothing gloves = new BuyableClothing(13.49, "Gloves", "Medium");
         addMultiple(gloves, 3);
     }
-    
+
     private void populateFoodInventory()
     {
         // Master list of all food held in the store on opening
-        
+
         // Perishables
         BuyableFood pizza = new BuyableFood(12.99, "Pizza", 400);
         foodForSale.add(pizza);
@@ -111,7 +147,7 @@ public class StoreInventory {
         foodForSale.add(lasagna);
         BuyableFood spinach = new BuyableFood(3.99, "Spinach", 250);
         foodForSale.add(spinach);
-        
+
         // Non-perishables
         BuyableFood beans = new BuyableFood(1.49, "Beans", 300);
         foodForSale.add(beans);
@@ -119,25 +155,47 @@ public class StoreInventory {
         foodForSale.add(noodles);
         BuyableFood rice = new BuyableFood(7.99, "Rice", 2000);
         addMultiple(rice, 5);
-        
+
     }
-    
+
     private void populateGamesInventory()
     {
         // Master list of all games held in the store on opening
-        
+
         // Board games
         BuyableGame monopoly = new BuyableGame(19.99, "Monopoly", 4, "Board Game");
         gamesForSale.add(monopoly);
         BuyableGame scrabble = new BuyableGame(24.99, "Scrabble", 2, "Board Game");
         gamesForSale.add(scrabble);
-              
+
         // Computer games
         BuyableGame breathOfTheWild = new BuyableGame(79.99, "Breath of the Wild", 1, "Video Game");
         gamesForSale.add(breathOfTheWild);
         BuyableGame forza = new BuyableGame(59.99, "Forza", 2, "Video Game");
     }
-    
+
+    public void populateFurnitureInventory(){
+        //List of all furniture that is held in store
+
+        //Couches
+        BuyableFurniture sectionalSofa = new BuyableFurniture(139.99, "Sectional Sofa", "Sofa");
+        furnitureForSale.add(sectionalSofa);
+        BuyableFurniture loveseatSofa = new BuyableFurniture(199.99, "Love Seat Sofa", "Sofa");
+        furnitureForSale.add(loveseatSofa);
+
+        //Chairs
+        BuyableFurniture armChair = new BuyableFurniture(79.99, "Arm Chair", "Chair");
+        furnitureForSale.add(armChair);
+        BuyableFurniture deskChair = new BuyableFurniture(90.99, "Desk Chair", "Chair");
+        furnitureForSale.add(deskChair);
+
+        //Beds
+        BuyableFurniture queenBed = new BuyableFurniture(259.99, "Queen Bed", "Bed");
+        furnitureForSale.add(queenBed);
+        BuyableFurniture kingBed = new BuyableFurniture(399.99, "King Bed", "Bed");
+        furnitureForSale.add(kingBed);
+    }
+
     // Helper method to add multiple copies of the same item to the inventory at once
     private void addMultiple(Buyable item, int numberToAdd)
     {
@@ -145,7 +203,7 @@ public class StoreInventory {
         {
             for(int i = 0; i < numberToAdd; i++)
             {
-                
+
                 clothesForSale.add((BuyableClothing)item);
             }
         }
@@ -154,14 +212,21 @@ public class StoreInventory {
             for(int i = 0; i < numberToAdd; i++)
             {
                 foodForSale.add((BuyableFood)item);
-            }            
+            }
         }
         else if(item instanceof BuyableGame)
         {
-             for(int i = 0; i < numberToAdd; i++)
+            for(int i = 0; i < numberToAdd; i++)
             {
                 gamesForSale.add((BuyableGame)item);
-            }           
+            }
         }
+
+        else if(item instanceof BuyableFurniture){
+            for(int i = 0; i < numberToAdd; i++){
+                furnitureForSale.add((BuyableFurniture)item);
+            }
+        }
+
     }
 }
